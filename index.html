@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#141419">
+  <meta name="description" content="เลือกหัวข้อหรือพิมพ์คำถาม ตั้งจิตสุ่มไพ่ทาโรต์หนึ่งใบ แล้วรับคำอ่านในใบเสร็จจากตู้ไพ่พ่อหมอ">
+  <title>ตู้ไพ่พ่อหมอ · Arcana</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="deck.js"></script>
+  <script defer src="reading.js"></script>
+  <script defer src="art.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="header shell">
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">✧</span><span>ตู้ไพ่พ่อหมอ <small>ARCANA</small></span></a>
+    <p class="header-deck"><span aria-hidden="true">☉</span> RIDER–WAITE–SMITH</p>
+    <button class="art-button" id="open-gallery" type="button">ดูสำรับ 78 ใบ</button>
+  </header>
+  <main class="stage shell">
+    <section class="intro" aria-labelledby="title">
+      <p class="kicker"><span aria-hidden="true">✦</span> เปิดไพ่ทาโรต์หนึ่งใบ</p>
+      <h1 id="title">ตั้งจิตให้สงบ<br><em>แล้วให้ไพ่พูด</em></h1>
+      <p class="lede">เลือกหัวข้อหรือพิมพ์คำถาม แล้วให้ตู้เปิดไพ่หนึ่งใบ<br class="wide-break"> พร้อมใบเสร็จคำอ่านสำหรับเรื่องที่คุณถาม</p>
+
+      <div class="question-panel" role="group" aria-labelledby="question-heading">
+        <h2 id="question-heading"><span aria-hidden="true">✧</span> อยากถามไพ่เรื่องอะไร</h2>
+        <div class="question-options">
+          <label for="topic-choice" class="select-label">หัวข้อ
+            <select id="topic-choice">
+              <option value="auto">เลือกตามคำถาม</option>
+              <option value="general">ภาพรวม</option>
+              <option value="love">ความรัก</option>
+              <option value="work">การงาน</option>
+              <option value="study">การเรียน</option>
+              <option value="money">การเงิน</option>
+              <option value="relations">เพื่อนและครอบครัว</option>
+              <option value="self">ตัวเองและใจ</option>
+            </select>
+          </label>
+          <label for="intent-choice" class="select-label">อยากรู้แบบไหน
+            <select id="intent-choice">
+              <option value="auto">เลือกตามคำถาม</option>
+              <option value="overview">ควรรู้อะไร</option>
+              <option value="action">ควรทำยังไง</option>
+              <option value="obstacle">ติดตรงไหน</option>
+              <option value="trend">แนวโน้มเป็นยังไง</option>
+              <option value="perspective">รู้สึกหรือมองยังไง</option>
+              <option value="choice">ควรเลือกทางไหน</option>
+            </select>
+          </label>
+        </div>
+        <label for="personal-question" class="select-label question-label">คำถามของคุณ <span>เว้นว่างได้</span></label>
+        <textarea id="personal-question" maxlength="180" rows="2" aria-describedby="question-example" placeholder="เช่น ฉันควรเตรียมสัมภาษณ์งานยังไง"></textarea>
+        <p class="question-example" id="question-example"></p>
+        <p class="question-route"><span aria-hidden="true" id="question-mark">✦</span><span id="question-route">ภาพรวม · ควรรู้อะไร</span></p>
+      </div>
+
+      <div class="ritual">
+        <h2><span aria-hidden="true">☾</span> ก่อนกดสุ่มไพ่</h2>
+        <ol>
+          <li>หายใจเข้าออกช้า ๆ สามครั้ง แล้วนึกถึงเรื่องเดียว</li>
+          <li>นึกถึงคำถามที่เลือกหรือพิมพ์ไว้เพียงเรื่องเดียว</li>
+          <li>ภาวนาในใจหนึ่งรอบ แล้วกดปุ่มบนตู้</li>
+        </ol>
+        <blockquote>“ขอให้ไพ่ใบนี้ช่วยให้ข้าพเจ้าเห็นสิ่งที่ควรใส่ใจ และเข้าใจเรื่องที่ถามชัดขึ้น”</blockquote>
+      </div>
+
+      <div class="settings" aria-label="ตั้งค่าการสุ่ม">
+        <label for="deck-choice" class="select-label">สำรับไพ่
+          <select id="deck-choice">
+            <option value="all">ครบสำรับ · 78 ใบ</option>
+            <option value="major">เมเจอร์อาร์คานา · 22 ใบ</option>
+            <option value="minor">ไมเนอร์อาร์คานา · 56 ใบ</option>
+          </select>
+        </label>
+        <label class="toggle">
+          <span><strong>รวมไพ่กลับหัว</strong><small>ปิดเพื่อสุ่มเฉพาะไพ่ตั้งตรง</small></span>
+          <input type="checkbox" id="allow-reversed" role="switch" checked>
+          <span class="toggle-track" aria-hidden="true"></span>
+        </label>
+      </div>
+    </section>
+
+    <section class="machine-area" aria-label="ตู้สุ่มไพ่และใบเสร็จคำทำนาย">
+      <div class="machine-floor" aria-hidden="true"></div>
+      <div class="orbit orbit-outer" aria-hidden="true"></div><div class="orbit orbit-inner" aria-hidden="true"></div>
+      <div class="floating-stars" aria-hidden="true"><span>✧</span><span>✦</span><span>✧</span><span>·</span></div>
+      <div class="machine" id="machine" data-state="ready">
+        <div class="machine-top">
+          <div class="machine-label"><span aria-hidden="true">✧</span> ARCANA</div>
+          <div class="machine-state"><span class="led" aria-hidden="true"></span><span id="machine-status">พร้อม</span></div>
+          <div class="bezel">
+            <div class="chamber">
+              <div class="deck-stack" aria-hidden="true"></div>
+              <div class="card-track" id="card-track" aria-label="ไพ่ในตู้">
+                <div class="machine-card card-back" id="face-down" aria-hidden="true">
+                  <span class="back-corner top-left">✧</span><span class="back-corner top-right">✧</span>
+                  <span class="back-corner bottom-left">✧</span><span class="back-corner bottom-right">✧</span>
+                  <span class="back-art"><span>☾</span><i>✦</i></span>
+                </div>
+                <div class="machine-card card-face" id="card-face" hidden>
+                  <div class="card-art-status" id="card-art-status" aria-hidden="true"></div>
+                  <img id="card-image" decoding="async" alt="" hidden>
+                </div>
+              </div>
+              <div class="card-bar" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="machine-caption" aria-hidden="true"><span></span><span>✦</span><span></span></div>
+        </div>
+
+        <div class="console">
+          <div class="printer">
+            <div class="printer-slot" aria-hidden="true"></div>
+            <p class="printer-label">ช่องพิมพ์คำทำนาย</p>
+          </div>
+          <button type="button" class="draw-button" id="draw"><span id="draw-label">สุ่มไพ่</span><span aria-hidden="true">✦</span></button>
+        </div>
+
+        <div class="paper-feed" id="paper-feed" hidden>
+          <article class="receipt" id="receipt" aria-labelledby="receipt-title" tabindex="-1">
+            <header class="receipt-header">
+              <span class="receipt-mark" id="receipt-mark" aria-hidden="true">✧</span>
+              <p class="receipt-brand">ARCANA</p>
+              <p id="receipt-topic">ใบเสร็จคำทำนาย</p>
+              <p class="receipt-intent" id="receipt-intent"></p>
+            </header>
+            <div class="receipt-question">
+              <p id="receipt-question-label"></p>
+              <p id="receipt-question-text"></p>
+            </div>
+            <h2 id="receipt-title"></h2>
+            <p class="receipt-thai" id="receipt-thai"></p>
+            <dl class="receipt-details">
+              <div><dt>ทิศไพ่</dt><dd id="receipt-orientation"></dd></div>
+              <div><dt>ชุดไพ่</dt><dd id="receipt-group"></dd></div>
+              <div><dt>ธาตุ</dt><dd id="receipt-element"></dd></div>
+              <div id="astro-row" hidden><dt>โหราศาสตร์</dt><dd id="receipt-astro"></dd></div>
+            </dl>
+            <p class="receipt-meaning" id="receipt-meaning"></p>
+            <p class="receipt-keywords" id="receipt-keywords"></p>
+            <section class="receipt-context" aria-labelledby="receipt-context-title">
+              <h3 id="receipt-context-title"></h3>
+              <p id="receipt-focus"></p>
+              <p id="receipt-prompt"></p>
+            </section>
+            <div class="receipt-end" aria-hidden="true">✦</div>
+          </article>
+          <button type="button" class="print-button" id="print">พิมพ์ใบเสร็จ <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+      <div class="machine-actions">
+        <p class="machine-help" id="machine-help">ตั้งจิตเสร็จแล้ว กดปุ่ม <strong>สุ่มไพ่</strong> บนตู้</p>
+        <button class="art-button" id="open-card-art" type="button" hidden>ดูภาพไพ่เต็ม</button>
+      </div>
+      <p class="sr-only" id="announcement" role="status"></p>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <p>เปิดไพ่เพื่อใคร่ครวญและความบันเทิง</p>
+    <p>ภาพไพ่ Pamela Colman Smith · <a href="https://tarostarot.com/tarot-card-data#public-domain-card-images">Taro’s Tarot</a> · <a href="https://commons.wikimedia.org/wiki/Category:Rider-Waite-Smith_tarot_deck_(TaionWC)">Wikimedia Commons</a></p>
+  </footer>
+
+  <dialog class="art-dialog" id="art-dialog" aria-labelledby="art-dialog-title">
+    <div class="art-dialog-header">
+      <h2 id="art-dialog-title">สำรับ Rider–Waite–Smith</h2>
+      <form method="dialog"><button class="art-button" type="submit">ปิด</button></form>
+    </div>
+    <section id="gallery-panel" aria-label="ภาพหน้าไพ่ทั้ง 78 ใบ">
+      <label class="select-label gallery-filter" for="gallery-suit">ชุดไพ่
+        <select id="gallery-suit">
+          <option value="all">ครบสำรับ · 78 ใบ</option>
+          <option value="major">เมเจอร์อาร์คานา · 22 ใบ</option>
+          <option value="wands">ไม้เท้า · 14 ใบ</option>
+          <option value="cups">ถ้วย · 14 ใบ</option>
+          <option value="swords">ดาบ · 14 ใบ</option>
+          <option value="pentacles">เหรียญ · 14 ใบ</option>
+        </select>
+      </label>
+      <div class="art-grid" id="art-grid"></div>
+    </section>
+    <section class="art-preview" id="art-preview" aria-labelledby="art-preview-title" hidden>
+      <button class="art-button" id="gallery-back" type="button">← กลับไปดูสำรับ</button>
+      <h3 id="art-preview-title"></h3>
+      <p id="art-preview-position"></p>
+      <p id="art-preview-status" role="status"></p>
+      <img id="art-preview-image" decoding="async" alt="" hidden>
+      <a class="art-source" id="art-preview-source" target="_blank" rel="noopener">ดูแหล่งภาพต้นฉบับ ↗</a>
+    </section>
+  </dialog>
+</body>
+</html>
+
+
